@@ -1,1 +1,4 @@
-https://dbatools.io/meap/
+- [Book: Learn dbatools in a Month of Lunches](https://dbatools.io/meap/)
+- [dbatools.io](https://dbatools.io/)
+- [dbatools.io/answers](https://gist.github.com/potatoqualitee/6ec31e978f8467764f06ca431a37f612)
+  
