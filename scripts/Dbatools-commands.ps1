@@ -71,3 +71,21 @@ Connect-DbaInstance -SqlInstance TestSQL01 -SqlCredential testadm
 $cred = Get-Credential
 # Connect to the local machine using the credential
 Connect-DbaInstance -SqlInstance TestSQL01 -SqlCredential $cred
+
+# Gets the SQL Server related services on one or more computers.
+# Requires Local Admin rights on destination computer(s).
+Get-DbaService -ComputerName CompTestSQL01 -AdvancedProperties
+#  -AdvancedProperties provides additional properties.
+
+# Gets the SQL Server related services on one or more computers by type
+Get-DbaService -ComputerName "CompTestSQL01", "CompTestSQL01" -Type Engine
+
+# Gets the SQL Server related services on one or more computers by InstanceName
+Get-DbaService -ComputerName CompTestSQL01 -InstanceName TestSQL01
+
+# Command to return the databases without log backup
+# Get-Help Get-DbaDatabase -Detailed
+Get-DbaDatabase -SqlInstance TestSQL01 -NoLogBackup
+Get-DbaDatabase -SqlInstance TestSQL01 -NoLogBackupSince '12/01/2023 08:00:00'
+#Find any databases without a full backup on your test instance
+Get-DbaDatabase -SqlInstance TestSQL01 -NoFullBackup
