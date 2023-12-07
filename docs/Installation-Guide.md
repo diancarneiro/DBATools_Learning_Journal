@@ -36,7 +36,7 @@ I trust Microsoft’s PowerShell Gallery
 Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
 ```
 
-### Install dbatools from the PowerShell Gallery for all users
+### 4. Install dbatools from the PowerShell Gallery for all users
 
 
 ```powershell
@@ -60,5 +60,15 @@ Install-Module -Name dbatools -Scope AllUsers -Force -AllowClobber
 # Note: By default, modules are auto-imported for the current user.
 #       If dbatools is not auto-imported, you can manually import it using this command.
 Import-Module dbatools
+
+# Setp 5: View the list of certificates to verify the installation
+# Run one of the following commands:
+# Note: This step is optional and helps verify the installation for the current user.
+Get-ChildItem Cert:\CurrentUser\TrustedPublisher | Select-Object *
+# or
+# Note: Run certmgr to view the certificates in the Trusted Publisher store interactively
+certmgr
+
 ```
+
 
