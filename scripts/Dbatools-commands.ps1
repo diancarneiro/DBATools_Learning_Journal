@@ -16,23 +16,37 @@ Get-Help Test-DbaConnection -Online
 # Example: Get detailed help for a specific cmdlet. The parameter section shows the parameters available for this command.
 Get-Help Test-DbaConnection -Detailed
 
-
 # Testing SQL engine and PowerShell remote connectivity
-
 # Use the Test-DbaConnection cmdlet to test SQL Server engine and PowerShell remote connectivity
-# Replace $Env:ComputerName with the actual SQL Server instance you want to test.
-Test-DbaConnection -SqlInstance $Env:ComputerName
-
+# Replace TestSQL01 with the actual SQL Server instance you want to test.
+Test-DbaConnection -SqlInstance TestSQL01
 # The -SqlInstance parameter specifies the SQL Server instance to test.
 # This command will check if a connection can be established to the specified SQL Server instance.
 # If successful, then the ConnectSuccess property will be true.
 
-
 # Connect to a SQL Server instance using the Connect-DbaInstance cmdlet
-
-Connect-DbaInstance -SqlInstance TestSQLInstance
-
+Connect-DbaInstance -SqlInstance TestSQL01
 # This command establishes a connection to the specified SQL Server instance.
 # If successful, you will be connected to the SQL Server instance, and you can then execute commands or queries.
+
+# Connect to multiple instances passed as an array
+Connect-DbaInstance -SqlInstance TestSQL01, TestSQL02, TestSQL03\TestInstance
+# Adjust the instance names as needed for your connection.
+
+# Piping instances Names
+"TestSQL01", "TestSQL02" | Connect-DbaInstance
+
+# Instances stored in a variable
+$instances = "TestSQL01", "TestSQL02" 
+Connect-DbaInstance -SqlInstance $instances
+# or
+$instances | Connect-DbaInstance
+# or
+$instances = "TestSQL01", "TestSQL02"
+foreach ($instanceName in $instances) {
+    Connect-DbaInstance -SqlInstance $instanceName
+}
+
+
 
 
