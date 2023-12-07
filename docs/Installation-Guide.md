@@ -25,3 +25,40 @@ Install-Module -Name PowerShellGet -Force -AllowClobber
 
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
+
+### 3. Trusting the PowerShell Gallery
+I trust Microsoft’s PowerShell Gallery
+
+```powershell
+# Set the installation policy of the PSGallery repository to Trusted
+# This allows scripts from the PowerShell Gallery to be installed without user confirmation.
+
+Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+```
+
+### Install dbatools from the PowerShell Gallery for all users
+
+
+```powershell
+# Step 1: Open a PowerShell session as an Administrator
+# Note: Right-click on the PowerShell icon and choose "Run as Administrator"
+#       to ensure you have the necessary permissions to install modules for all users.
+ 
+# Step 2: Set the Execution Policy (if needed)
+# Note: Setting the execution policy to RemoteSigned allows script execution.
+#       This step may already be done if the policy is appropriately configured.
+#Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope LocalMachine -Force
+
+# Step 3: Install dbatools for all users
+# Note: The -Scope parameter is set to AllUsers to make the module available
+#       to all users on the machine.
+#       The -Force parameter installs the module without asking for confirmation.
+#       The -AllowClobber parameter allows overwriting existing commands with the same name.
+Install-Module -Name dbatools -Scope AllUsers -Force -AllowClobber
+
+# Step 4: Import the dbatools module (if not auto-imported)
+# Note: By default, modules are auto-imported for the current user.
+#       If dbatools is not auto-imported, you can manually import it using this command.
+Import-Module dbatools
+```
+
