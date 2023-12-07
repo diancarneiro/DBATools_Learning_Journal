@@ -47,6 +47,27 @@ foreach ($instanceName in $instances) {
     Connect-DbaInstance -SqlInstance $instanceName
 }
 
+# Get instance names from a separate database source and connect
+$instances = (Invoke-DbaQuery -SqlInstance teste -Database DBA -Query "SELECT [InstanceName] FROM [dbo].[Instance]").InstanceName
+$instances | Connect-DbaInstance
+# or
+$instances = Invoke-DbaQuery -SqlInstance TestSQL01 -Database DBA -Query "SELECT [InstanceName] FROM [dbo].[Instance]" | Select-Object -ExpandProperty InstanceName
+$instances | Connect-DbaInstance
+# ExpandProperty InstanceName is used to extract the 'InstanceName' property from the result
+
+# Connect to instance using a non-default port
+Connect-DbaInstance -SqlInstance "TestSQL01,57689"
+# or
+Connect-DbaInstance -SqlInstance "TestSQL01:57689"
+
+# Connect to instances with SQL Server Authentication
+# Connect to the SQL Server instance "TestSQL01" using the SQL Server credential "testadm"
+# You will be prompted for the password
+Connect-DbaInstance -SqlInstance TestSQL01 -SqlCredential testadm
 
 
-
+# Save the credential to use SQL Server Authentication with multiple commands
+# Get the credential and set it to a variable
+$cred = Get-Credential
+# Connect to the local machine using the credential
+Connect-DbaInstance -SqlInstance TestSQL01 -SqlCredential $cred
