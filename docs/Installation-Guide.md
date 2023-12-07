@@ -71,4 +71,12 @@ certmgr
 
 ```
 
+## Update dbatools
+
+# Update dbatools from the PowerShell Gallery
+
+```powershell
+Update-Module dbatools
+```
+
 
