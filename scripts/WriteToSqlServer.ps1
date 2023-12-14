@@ -26,5 +26,5 @@ Invoke-DbaQuery -SqlInstance TestSQL01 -Database DBA -Query $query
 $tables = Get-DbaDbTable -SqlInstance TestSQL01 -Database DBA
 # This will get a list of all data types of the columns the 'DBA' database on the 'TestSQL01' SQL Server instance in databases table.
 (Get-DbaDbTable -SqlInstance TestSQL01 -Database DBA -Table Databases).Columns | Select-Object Parent, Name, Datatype
-(Get-DbaDbTable -SqlInstance devloosql05-t -Database DBA -Table Instance).Columns | Select-Object -ExpandProperty DataType
+(Get-DbaDbTable -SqlInstance TestSQL01 -Database DBA -Table Instance).Columns | Select-Object -ExpandProperty DataType
 
