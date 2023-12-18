@@ -35,3 +35,28 @@ Repair-DbaDbOrphanUser -SqlInstance TEST01 -Database DBA
 # If you run Repair-DbaDbOrphanUser without a corresponding server-level login, 
 # it will result in 'No matching login' status.
 # After ensuring the login exists, run the Repair-DbaDbOrphanUser function to fix any orphaned users.
+
+
+# 2. Preventing Login Issues
+
+
+# Syncing users across an availability group
+    Get-Help Copy-DbaLogin -Full
+
+# 3.Logins, users, and permissions source control
+
+Export-DbaLogin -SqlInstance devloosql01-t -Path \\folder\dbatoolsexport
+
+# Utilize Git for version control. Automate daily download of the exported login file.
+# This enables the comparison of login details between different days to track any changes.
+# Schedule a task to download and commit the file to a Git repository daily for effective tracking.
+
+# Listing the permissions on the instance
+Get-DbaUserPermission -SqlInstance devloosql01-t -Database DBA |
+Select SqlInstance, Object, Type, Member, RoleSecurableClass | Format-Table
+
+# Download the list to Excel file
+# Install-Module -Name ImportExcel -Scope CurrentUser
+
+Get-Help Export-Excel -Detailed
+
