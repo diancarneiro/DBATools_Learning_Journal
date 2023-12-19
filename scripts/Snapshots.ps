@@ -1,0 +1,52 @@
+# Understanding SQL Server Database Snapshots
+
+# What is a Database Snapshot?
+# - A database snapshot in SQL Server is a read-only, static view of a database at a specific point in time.
+# - It's created almost instantaneously by taking a sort of 'photograph' of the database's data pages.
+# - After creation, the snapshot remains unchanged, while the source database can continue to be updated.
+
+# How Does It Work?
+# - When a snapshot is created, it initially takes up very little space, as it doesn't contain a copy of the data.
+# - Instead, it maintains a copy of the data pages as they were at the moment of snapshot creation.
+# - As the source database is modified (inserts, updates, deletes), the original pages are copied to the snapshot before they are changed.
+# - This process ensures that the snapshot reflects the state of the database at the time it was created, regardless of subsequent changes.
+
+# Benefits of Snapshots:
+# - Fast to create and does not require a full database copy.
+# - Useful for reporting purposes, as it provides a consistent and unchanging view of the data.
+# - Can be used for safeguarding data before making significant changes, like updates or schema changes.
+
+# Limitations:
+# - Consumes additional disk space as changes are made to the source database.
+# - Not a substitute for backups, as it relies on the source database for its existence.
+# - If the source database is deleted, the snapshot becomes unusable.
+
+# Guidelines on When to Use Database Snapshots:
+# - Ideal for scenarios where the amount of data change is relatively small.
+# - For example, running an upgrade script which only modifies a small portion of the database.
+# - In such cases, snapshots can be an efficient way to quickly revert changes if needed.
+
+# When Snapshots May Not Be Ideal:
+# - Not recommended for situations involving substantial data modifications.
+# - For instance, if you plan to truncate and rebuild most of the database, the snapshot will grow significantly.
+# - The increased size and additional I/O required for maintaining both the original database and the snapshot might outweigh the benefits.
+# - In such cases, relying on a full database backup may be a more suitable approach.
+
+# Key Considerations:
+# - Assess the expected volume of data changes.
+# - Consider the storage and performance implications of maintaining a snapshot.
+# - Choose the right recovery strategy (snapshot or full backup) based on the nature and scale of the operations being performed.
+
+
+
+# Creating a database snapshot
+New-DbaDbSnapshot -SqlInstance TEST01 -Database DBA
+# The snapshot will be named with the database name and a date suffix by default. The files for the snapshot will be placed in the same folder as the source database data files.
+# Reverting to a database snapshot does break the LSN chain for your database, so make sure to take that into consideration, and perhaps run a new full database backup once you’re back in a good state.
+
+# Create a snapshot, drop a table, and then roll back the database to the snapshot:
+
+New-DbaDbSnapshot -SqlInstance TEST01 -Database DBA 
+Remove-DbaDbTable -SqlInstance TEST01 -Database DBA -Table SqlLoginList
+Get-DbaProcess -SqlInstance TEST01 -Database DBA | Stop-DbaProcess 
+Get-DbaDbSnapshot -SqlInstance TEST01 -Database DBA | Restore-DbaDbSnapshot
