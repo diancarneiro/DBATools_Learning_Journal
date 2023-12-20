@@ -80,3 +80,15 @@ Update-Module dbatools
 ```
 
 
+## Install Pester
+
+If you get any kind of error related to pester versions try to uninstall before installing:
+```powershell
+Uninstall-Module -Name Pester -AllVersions -Force
+```
+
+Install the New Pester Version:
+```powershell
+Install-Module -Name Pester -RequiredVersion 4.10.1 -Scope AllUsers -Force -SkipPublisherCheck
+```
+
